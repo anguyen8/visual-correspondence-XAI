@@ -9,7 +9,8 @@ import torch.nn.functional as F
 from datasets import *
 from helper import *
 from image_slicer import join
-from IPython.display import Image
+# from IPython.display import Image
+from PIL import Image
 from matplotlib import cm
 from matplotlib import pyplot as plt
 from params import *

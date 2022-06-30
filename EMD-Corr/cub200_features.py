@@ -2,10 +2,7 @@ from collections import OrderedDict
 
 import torch
 import torch.nn as nn
-import torch.utils.model_zoo as model_zoo
-from torchsummary import summary
-
-model_dir = "."
+model_dir = '.'
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -115,14 +112,14 @@ class Bottleneck(nn.Module):
         return block_kernel_sizes, block_strides, block_paddings
 
 
-class ResNet_features(nn.Module):
+class ResNetFeatures(nn.Module):
     """
     the convolutional layers of ResNet
     the average pooling and final fully convolutional layer is removed
     """
 
     def __init__(self, block, layers, num_classes=1000, zero_init_residual=False):
-        super(ResNet_features, self).__init__()
+        super(ResNetFeatures, self).__init__()
 
         self.inplanes = 64
 
@@ -234,13 +231,13 @@ class ResNet_features(nn.Module):
         return template.format(self.num_layers() + 1)
 
 
-def resnet50_features(pretrained=True, inat=True, **kwargs):
+def get_resnet50_features(pretrained=True, inat=True, **kwargs):
     """Constructs a ResNet-50 model.
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet or iNaturalist
         pretrained (bool): If True, returns a model pre-trained on iNaturalst; else, ImageNet
     """
-    model = ResNet_features(Bottleneck, [3, 4, 6, 4], **kwargs)
+    model = ResNetFeatures(Bottleneck, [3, 4, 6, 4], **kwargs)
     if pretrained:
         if inat:
             model_dict = torch.load(

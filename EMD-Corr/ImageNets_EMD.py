@@ -8,17 +8,16 @@ import numpy as np
 import PIL
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torchvision
 import torchvision.transforms as transforms
 import wandb
+import sys
 from datasets import Dataset
 from emd_utils import EMDFunctions
 from helper import HelperFunctions
 from params import RunningParams
 from PIL import Image
 from torchvision.datasets import ImageFolder
-from torchvision.io import read_image
 from tqdm import tqdm
 from visualize import Visualization
 
@@ -50,77 +49,32 @@ wandb.init(
     config={"datasets": Dataset.datasets, "Running Params": RunningParams},
 )
 
-if RunningParams.AdvProp_RESNET:
-    model = AdvPropOps.load_adv_prop_model("/home/giang/Downloads/pgd_5.pth.tar").eval()
-    feature_extractor = nn.Sequential(*list(model.module.children())[: 4 - 6]).cuda()
-    Dataset.imagenet_transform = transforms.Compose(
-        [
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
-        ]
-    )
-
-    Dataset.imagenet_transform_crop_patch = transforms.Compose(
-        [
-            transforms.Resize((224, 224)),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
-        ]
-    )
-
-elif RunningParams.Deformable_ProtoPNet:
-    assert not RunningParams.AdvProp_RESNET
+if RunningParams.Deformable_ProtoPNet is True:
+    pass
 else:
     model = torchvision.models.resnet50(pretrained=True).eval().cuda()
-    if RunningParams.CONV_AGGEREGATION:
-        feature_extractor_L4 = nn.DataParallel(
-            nn.Sequential(*list(model.children())[: 4 - 6]).cuda()
-        )
-        feature_extractor_L3 = nn.DataParallel(
-            nn.Sequential(*list(model.children())[: 3 - 6]).cuda()
-        )
-        feature_extractor_L2 = nn.DataParallel(
-            nn.Sequential(*list(model.children())[: 2 - 6]).cuda()
-        )
-        feature_extractor_L1 = nn.DataParallel(
-            nn.Sequential(*list(model.children())[: 1 - 6]).cuda()
-        )
-        feature_extractors = [
-            feature_extractor_L1,
-            feature_extractor_L2,
-            feature_extractor_L3,
-            feature_extractor_L4,
-        ]
-    else:
-        if RunningParams.CONV4:
-            feature_extractor = nn.Sequential(*list(model.children())[: 4 - 6]).cuda()
-        elif RunningParams.CONV3:
-            feature_extractor = nn.Sequential(*list(model.children())[: 3 - 6]).cuda()
-        elif RunningParams.CONV2:
-            feature_extractor = nn.Sequential(*list(model.children())[: 2 - 6]).cuda()
-        elif RunningParams.CONV1:
-            feature_extractor = nn.Sequential(*list(model.children())[: 1 - 6]).cuda()
+    feature_extractor = nn.Sequential(*list(model.children())[: 4 - 6]).cuda()
+
+# ---------- Parse argv -------------
+val_datasets = sys.argv[1]
+vis_flag = (sys.argv[2] == 'True')
+inat = (sys.argv[3] == 'True')
+RunningParams.INAT = inat
+if val_datasets == Dataset.CUB200 and RunningParams.INAT is True:
+    RunningParams.Deformable_ProtoPNet = True
 
 if RunningParams.Deformable_ProtoPNet:
-    from CUB_FeatureExtractor import resnet50_features
+    from cub200_features import get_resnet50_features
 
-    model = resnet50_features(inat=RunningParams.INAT, pretrained=True)
+    model = get_resnet50_features(inat=RunningParams.INAT, pretrained=True)
 
     model = model.cuda()
     model.eval()
     model = nn.DataParallel(model)
     feature_extractor = model
 else:
-    if (
-        RunningParams.AdvProp_RESNET is False
-        and RunningParams.CONV_AGGEREGATION is False
-    ):
-        feature_extractor = nn.DataParallel(feature_extractor)
-        model = nn.DataParallel(model)
-
-np.seterr(all="ignore")
+    feature_extractor = nn.DataParallel(feature_extractor)
+    model = nn.DataParallel(model)
 
 imagenet_train_data = ImageFolder(
     # Your path to ImageNet train dataset
@@ -128,9 +82,12 @@ imagenet_train_data = ImageFolder(
 )
 
 exported_results = {}
-sess = 1
+RunningParams.VISUALIZATION = vis_flag
+
+print(RunningParams.__dict__)
+
 with torch.no_grad():
-    for val_dataset in Dataset.datasets:
+    for val_dataset in [val_datasets]:
         if val_dataset == Dataset.CUB200:
             imagenet_train_data = ImageFolder(
                 # Your path to CUB train dataset
@@ -139,13 +96,7 @@ with torch.no_grad():
             )
             RunningParams.DEEP_NN_TEST = False
             RunningParams.IMAGENET_REAL = False
-            if RunningParams.VISUALIZATION is True:
-                RunningParams.INAT = True
-                RunningParams.Deformable_ProtoPNet = True
 
-        elif val_dataset != Dataset.IMAGENET_1K_50K_CLEAN:
-            RunningParams.IMAGENET_REAL = False
-        print(RunningParams.IMAGENET_REAL)
         random.seed(42)
         np.random.seed(42)
         print("Running: {}".format(val_dataset))
@@ -186,12 +137,7 @@ with torch.no_grad():
             N_test = 5794
 
         if RunningParams.AP_FEATURE:
-            if RunningParams.AdvProp_RESNET:
-                KNN_dict = np.load(
-                    "KNN_dict_AdvProp_AP/KNN_dict_{}.npy".format(val_dataset),
-                    allow_pickle="False",
-                ).item()
-            elif RunningParams.Deformable_ProtoPNet:
+            if RunningParams.Deformable_ProtoPNet is True:
                 KNN_dict = np.load(
                     "KNN_dict_Deform_ProtoP_AP/KNN_dict_{}.npy".format(val_dataset),
                     allow_pickle="False",
@@ -203,12 +149,7 @@ with torch.no_grad():
                     allow_pickle="False",
                 ).item()
         else:
-            if RunningParams.AdvProp_RESNET:
-                KNN_dict = np.load(
-                    "KNN_dict_AdvProp/KNN_dict_{}.npy".format(val_dataset),
-                    allow_pickle="False",
-                ).item()
-            elif RunningParams.Deformable_ProtoPNet:
+            if RunningParams.Deformable_ProtoPNet is True:
                 KNN_dict = np.load(
                     "KNN_dict_Deform_ProtoP/KNN_dict_{}.npy".format(val_dataset),
                     allow_pickle="False",
@@ -236,7 +177,7 @@ with torch.no_grad():
         Task1_images = Task1_images_dict["Correct"] + Task1_images_dict["Wrong"]
 
         N_test = len(KNN_dict) - 2
-        # N_test = 10 # Just for test, remove to get the paper numbers
+        N_test = 10 # Just for test, remove to get the paper numbers
         Task1_images_dict = np.load(
             "/home/giang/Downloads/Gorilla/Task1/Task1_metadata.npy",
             allow_pickle="False",
@@ -290,7 +231,7 @@ with torch.no_grad():
                 ):
                     continue
 
-                NNs = KNN_dict[i]["NNs"][-K_value:]
+                NNs = KNN_dict[i]['NNs'][-K_value:]
 
                 if RunningParams.IMAGENET_REAL is True:
                     gt_ids = real_labels[base_path_name]
@@ -308,7 +249,6 @@ with torch.no_grad():
                 img_paths = [Query[0]] + [NN[0] for NN in NNs]
                 for path in img_paths:
                     image = PIL.Image.open(path)
-                    # image = read_image(path).cuda()
                     if HelperFunctions.is_grey_scale(path) and image.mode not in [
                         "RGBA",
                         "CMYK",
@@ -352,53 +292,21 @@ with torch.no_grad():
                     images.append(transform_img)
 
                 data = torch.stack(images, dim=0)
-                data = torch.squeeze(data)
-                data = data.cuda()
+                data = torch.squeeze(data).cuda()
 
-                if RunningParams.CONV_AGGEREGATION:
-                    emd_distances = []
-                    for conv_idx in range(RunningParams.resnet_conv_num):
-                        if RunningParams.Deformable_ProtoPNet:
-                            # fb = F.avg_pool2d(feature_extractor[conv_idx](data), (7, 7))
-                            feature_extractor[conv_idx](data)
-                        else:
-                            fb = feature_extractors[conv_idx](data)
-                        # Resize the feature map to 7x7 for all conv features
-                        fb = nn.AdaptiveAvgPool2d(RunningParams.layer4_fm_size)(fb)
-                        if RunningParams.DIML_FEAT:
-                            fb_center = fb
+                fb = feature_extractor(data)
 
-                        (
-                            emd_distance,
-                            q2g_att,
-                            g2q_att,
-                            opt_plan,
-                        ) = EMDFunctions.compute_emd_distance(
-                            K_value, fb_center, fb, RunningParams.UNIFORM, num_patch
-                        )
-                        emd_distances.append(emd_distance)
-                    emd_distance = sum(emd_distances)
-                else:
-                    if RunningParams.Deformable_ProtoPNet:
-                        # print(data.shape)
-                        # fb = F.avg_pool2d(feature_extractor(data), (7, 7))
-                        fb = feature_extractor(data)
-                    else:
-                        fb = feature_extractor(data)
-                    if RunningParams.CONV4 is False:
-                        fb = nn.AdaptiveAvgPool2d(RunningParams.layer4_fm_size)(fb)
+                if RunningParams.DIML_FEAT:
+                    fb_center = fb
 
-                    if RunningParams.DIML_FEAT:
-                        fb_center = fb
-
-                    (
-                        emd_distance,
-                        q2g_att,
-                        g2q_att,
-                        opt_plan,
-                    ) = EMDFunctions.compute_emd_distance(
-                        K_value, fb_center, fb, RunningParams.UNIFORM, num_patch
-                    )
+                (
+                    emd_distance,
+                    q2g_att,
+                    g2q_att,
+                    opt_plan,
+                ) = EMDFunctions.compute_emd_distance(
+                    K_value, fb_center, fb, RunningParams.UNIFORM, num_patch
+                )
 
                 emd_distance = emd_distance[
                     1:
@@ -442,7 +350,6 @@ with torch.no_grad():
                 if KNN_dict[i]["Output"] is True:
                     correct_count_KNN += 1
 
-                # NNs_id_count_dict = collections.Counter(labels_np[scores_top20])
                 NNs_id_count_dict = collections.Counter(
                     list(labels_np[scores_top20].numpy())
                 )
@@ -826,6 +733,8 @@ with torch.no_grad():
                     gt_id = KNN_dict[i]["GT_id"]
 
                     if RunningParams.IMAGENET_REAL:
+                        base_path_name = os.path.basename(Query[0])
+                        gt_ids = real_labels[base_path_name]
                         gt_id = gt_ids
                         if prediction in gt_id:
                             rd_correct_count += 1

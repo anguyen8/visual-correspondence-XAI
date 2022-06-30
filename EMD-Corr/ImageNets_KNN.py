@@ -4,6 +4,7 @@ import os
 import random
 import numpy as np
 import torch
+import sys
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
@@ -31,40 +32,22 @@ RunningParams = RunningParams()
 Dataset = Dataset()
 HelperFunctions = HelperFunctions()
 
-print(RunningParams.__dict__)
-
 layer = 4
 
-if RunningParams.AdvProp_RESNET:
-    model = AdvPropOps.load_adv_prop_model("/home/giang/Downloads/pgd_5.pth.tar").eval()
-    feature_extractor = nn.Sequential(
-        *list(model.module.children())[: layer - 6]
-    ).cuda()
-    Dataset.imagenet_transform = transforms.Compose(
-        [
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
-        ]
-    )
+model = torchvision.models.resnet50(pretrained=True).eval()
+feature_extractor = nn.Sequential(*list(model.children())[: layer - 6]).cuda()
 
-    Dataset.imagenet_transform_crop_patch = transforms.Compose(
-        [
-            transforms.Resize((224, 224)),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
-        ]
-    )
-
-else:
-    model = torchvision.models.resnet50(pretrained=True).eval()
-    feature_extractor = nn.Sequential(*list(model.children())[: layer - 6]).cuda()
+# ---------- Parse argv -------------
+val_datasets = sys.argv[1]
+inat = (sys.argv[2] == 'True')
+RunningParams.INAT = inat
+if val_datasets == Dataset.CUB200 and RunningParams.INAT is True:
+    RunningParams.Deformable_ProtoPNet = True
 
 if RunningParams.Deformable_ProtoPNet:
-    from CUB_FeatureExtractor import resnet50_features
+    from cub200_features import get_resnet50_features
 
-    model = resnet50_features(inat=RunningParams.INAT, pretrained=True)
+    model = get_resnet50_features(inat=RunningParams.INAT, pretrained=True)
 
     model = model.cuda()
     model.eval()
@@ -75,16 +58,17 @@ else:
         feature_extractor = nn.Sequential(*list(model.children())[:-1]).cuda()
     model.cuda()
 
-    if RunningParams.AdvProp_RESNET is False:
-        feature_extractor = nn.DataParallel(feature_extractor)
-        model = nn.DataParallel(model)
+    feature_extractor = nn.DataParallel(feature_extractor)
+    model = nn.DataParallel(model)
 
 imagenet_train_data = ImageFolder(
     # ImageNet train folder
     root="/home/giang/Downloads/train/", transform=Dataset.imagenet_transform
 )
 
-for val_dataset in Dataset.datasets:
+print(RunningParams.__dict__)
+
+for val_dataset in [val_datasets]:
     if val_dataset == Dataset.CUB200:
         imagenet_train_data = ImageFolder(
             # CUB train folder
@@ -98,15 +82,7 @@ for val_dataset in Dataset.datasets:
     print(val_dataset)
 
     if (
-        val_dataset
-        in [
-            Dataset.IMAGENET_1K_50K_CLEAN,
-            Dataset.IMAGENET_1K,
-            Dataset.IMAGENET_1K_50K,
-            Dataset.IMAGENET_PILOT_VIS,
-            Dataset.IMAGENET_MULTI_OBJECT,
-        ]
-        and RunningParams.IMAGENET_REAL is True
+        RunningParams.IMAGENET_REAL is True
     ):
         real_json = open("reassessed-imagenet/real.json")
         real_ids = json.load(real_json)
@@ -123,24 +99,6 @@ for val_dataset in Dataset.datasets:
             ),
             transform=Dataset.imagenet_transform,
         )
-    elif (
-        val_dataset in Dataset.IMAGENET_CROP_PATCH
-        or val_dataset == Dataset.IMAGENET_TRANSLATE_100
-        or val_dataset == Dataset.IMAGENET_ROTATE_45
-    ):
-        if (
-            val_dataset == Dataset.IMAGENET_TRANSLATE_100
-            or val_dataset == Dataset.IMAGENET_ROTATE_45
-        ):
-            imagenet_val_data = ImageFolder(
-                root="/home/giang/Downloads/ImageNet-RT/{}/".format(val_dataset),
-                transform=Dataset.imagenet_transform,
-            )
-        else:
-            imagenet_val_data = ImageFolder(
-                root="/home/giang/Downloads/ImageNet-RT/{}/".format(val_dataset),
-                transform=Dataset.imagenet_transform_crop_patch,
-            )
     else:
         if (
             val_dataset in Dataset.ADVERSARIAL_PATCH
@@ -157,7 +115,7 @@ for val_dataset in Dataset.datasets:
                     transform=Dataset.imagenet_transform,
                 )
             else:
-                if val_dataset == Dataset.IMAGENET_1K_50K_CLEAN:
+                if val_dataset in [Dataset.IMAGENET_1K_50K_CLEAN, Dataset.OBJECTNET_5K, Dataset.IMAGENET_A]:
                     imagenet_val_data = ImageFolder(
                         root="/home/giang/Downloads/shared_datasets/{}/".format(val_dataset),
                         transform=Dataset.imagenet_transform,
@@ -198,11 +156,12 @@ for val_dataset in Dataset.datasets:
         N_test = 50000
     elif val_dataset == Dataset.IMAGENET_1K_50K_CLEAN:
         N_test = 46043
-        # N_test = 10 # Just for test, remove to get the paper numbers
     elif val_dataset == Dataset.CUB200:
         N_test = 5794
     else:
         N_test = len(imagenet_val_data)
+
+    N_test = 10 # Just for test, remove to get the paper numbers
 
     # Subset the validation dataset
     random_indices = random.sample(range(0, len(imagenet_val_data)), N_test)
@@ -305,11 +264,7 @@ for val_dataset in Dataset.datasets:
                 target_c = target.cuda()
 
                 labels = HelperFunctions.to_np(target)
-                out = (
-                    model(data, target)[0]
-                    if RunningParams.AdvProp_RESNET
-                    else model(data)
-                )
+                out = model(data)
                 model_output = out[:, mask]
                 pred = model_output.data.max(1)[1]
                 correct_ones += pred.eq(target_c.data).sum().item()
@@ -513,13 +468,7 @@ for val_dataset in Dataset.datasets:
         if RunningParams.KNN_RESULT_SAVE and KNN_dict and K == 20:
             if RunningParams.AP_FEATURE:
                 # Save and read the KNN dict
-                if RunningParams.AdvProp_RESNET:
-                    HelperFunctions.check_and_mkdir("KNN_dict_AdvProp_AP")
-                    np.save(
-                        "KNN_dict_AdvProp_AP/KNN_dict_{}.npy".format(val_dataset),
-                        KNN_dict,
-                    )
-                elif RunningParams.Deformable_ProtoPNet:
+                if RunningParams.Deformable_ProtoPNet is True:
                     HelperFunctions.check_and_mkdir("KNN_dict_Deform_ProtoP_AP")
                     np.save(
                         "KNN_dict_Deform_ProtoP_AP/KNN_dict_{}.npy".format(val_dataset),
@@ -530,12 +479,7 @@ for val_dataset in Dataset.datasets:
                     np.save("KNN_dict_AP/KNN_dict_{}.npy".format(val_dataset), KNN_dict)
             else:
                 # Save and read the KNN dict
-                if RunningParams.AdvProp_RESNET:
-                    HelperFunctions.check_and_mkdir("KNN_dict_AdvProp")
-                    np.save(
-                        "KNN_dict_AdvProp/KNN_dict_{}.npy".format(val_dataset), KNN_dict
-                    )
-                elif RunningParams.Deformable_ProtoPNet:
+                if RunningParams.Deformable_ProtoPNet is True:
                     HelperFunctions.check_and_mkdir("KNN_dict_Deform_ProtoP")
                     np.save(
                         "KNN_dict_Deform_ProtoP/KNN_dict_{}.npy".format(val_dataset),

@@ -1,12 +1,11 @@
 class RunningParams(object):
     def __init__(self):
         self.VISUALIZATION = False
-        self.AdvProp_RESNET = False
         self.UNIFORM = False
         self.MIX_DISTANCE = False
         # Calculate distance of two images based on 5 patches only (not entire image)
         self.CLOSEST_PATCH_COMPARISON = True
-        self.IMAGENET_REAL = True
+        self.IMAGENET_REAL = False
         self.INAT = False
         self.Deformable_ProtoPNet = False
 
@@ -23,16 +22,6 @@ class RunningParams(object):
         self.AP_FEATURE = True
         self.DUPLICATE_THRESHOLD = 0.9
 
-        # Conv options
-        self.CONV4 = True
-        self.CONV3 = False
-        self.CONV2 = False
-        self.CONV1 = False
-
-        self.resnet_conv_num = 4
-        # Use the aggregation of conv layers
-        self.CONV_AGGEREGATION = False
-
         self.N_test = 50000
         self.K_value = 50
         self.MajorityVotes_K = 20
@@ -40,7 +29,6 @@ class RunningParams(object):
         if self.VISUALIZATION is True:
             self.AP_FEATURE = True
             self.IMAGENET_REAL = True
-            self.AP_FEATURE = True
             self.CLOSEST_PATCH_COMPARISON = True
             self.K_value = 50
             self.MajorityVotes_K = 20

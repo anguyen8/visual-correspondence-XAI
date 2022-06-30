@@ -16,14 +16,6 @@ class Dataset(object):
         self.IMAGENET_SKETCH = "imagenet-sketch"
         self.DAMAGE_NET = "DAmageNet_processed"
 
-        self.IMAGENET_ROTATE_45 = "Rotation_45"
-        self.IMAGENET_TRANSLATE_100 = "Translation_100"
-
-        self.IMAGENET_RANDOM_CROP_05 = "imagenet1k_random_crop_0.5"
-        self.IMAGENET_RANDOM_CROP_07 = "imagenet1k_random_crop_0.7"
-        self.IMAGENET_RANDOM_PATCH = "imagenet1k_random_patch_new"
-        self.IMAGENET_RANDOM_NOISE_PATCH = "imagenet1k-random-noise-patch"
-
         self.IMAGENET_HARD = "Hard"
         self.IMAGENET_MULTI_OBJECT = "Multi-Object"
 
@@ -46,44 +38,14 @@ class Dataset(object):
             self.ADVERSARIAL_PATCH_NEW,
         ]
 
-        self.IMAGENET_CROP_PATCH = [
-            self.IMAGENET_RANDOM_PATCH,
-            self.IMAGENET_RANDOM_CROP_07,
-            self.IMAGENET_RANDOM_CROP_05,
-            self.IMAGENET_RANDOM_NOISE_PATCH,
-            self.ADVERSARIAL_PATCH,
-        ]
-
         self.IMAGENET_C_NOISE = [self.GAUSSIAN_NOISE, self.GAUSSIAN_BLUR]
 
         self.datasets = list(
             map(lambda noise: "imagenet-c/" + noise, self.IMAGENET_C_NOISE)
         )
 
-        self.datasets = [
-            self.IMAGENET_1K,
-            self.OBJECTNET_5K,
-            self.IMAGENET_A,
-            self.IMAGENET_R,
-            self.IMAGENET_SKETCH,
-            self.DAMAGE_NET,
-            self.IMAGENET_RANDOM_PATCH,
-            self.IMAGENET_RANDOM_NOISE_PATCH,
-            self.ADVERSARIAL_PATCH1,
-            self.GAUSSIAN_NOISE,
-            self.GAUSSIAN_BLUR,
-        ]
-
-        self.vis_datasets = [
-            self.IMAGENET_RANDOM_NOISE_PATCH,
-            self.OBJECTNET_5K,
-            self.ADVERSARIAL_PATCH1,
-            self.IMAGENET_1K,
-            self.IMAGENET_RANDOM_PATCH,
-        ]
-
         # Your validation datasets of interests
-        self.datasets = [self.IMAGENET_1K_50K_CLEAN]
+        self.datasets = [self.OBJECTNET_5K]
 
         # Standard ImageNet Transformer to apply imagenet's statistics to input batch
         self.imagenet_transform = transforms.Compose(

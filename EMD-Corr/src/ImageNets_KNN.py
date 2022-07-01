@@ -161,7 +161,7 @@ for val_dataset in [val_datasets]:
     else:
         N_test = len(imagenet_val_data)
 
-    N_test = 10 # Just for test, remove to get the paper numbers
+    # N_test = 4 # Just for test, remove to get the paper numbers
 
     # Subset the validation dataset
     random_indices = random.sample(range(0, len(imagenet_val_data)), N_test)
@@ -329,8 +329,8 @@ for val_dataset in [val_datasets]:
 
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate(tqdm(train_loader)):
-            if batch_idx == 2:
-                break
+            # if batch_idx == 2:
+            #     break
             data = data.cuda()
             labels = HelperFunctions.to_np(target)
 

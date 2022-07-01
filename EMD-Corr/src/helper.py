@@ -78,7 +78,7 @@ class HelperFunctions(object):
         return;
         """
 
-        input_f = open("synset_words.txt")
+        input_f = open('/home/giang/Downloads/visual-correspondence-XAI/EMD-Corr/synset_words.txt')
         label_map = {}
         for line in input_f:
             parts = line.strip().split(" ")

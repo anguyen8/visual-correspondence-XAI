@@ -30,5 +30,5 @@ then
 fi
 
 # input dataset and visualization bool value
-python ImageNets_KNN.py "$parameterA" "$parameterC"
-python ImageNets_EMD.py "$parameterA" "$parameterB" "$parameterC"
+python src/ImageNets_KNN.py "$parameterA" "$parameterC"
+python src/ImageNets_EMD.py "$parameterA" "$parameterB" "$parameterC"

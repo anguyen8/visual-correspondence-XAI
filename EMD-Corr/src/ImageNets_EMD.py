@@ -177,7 +177,7 @@ with torch.no_grad():
         Task1_images = Task1_images_dict["Correct"] + Task1_images_dict["Wrong"]
 
         N_test = len(KNN_dict) - 2
-        N_test = 10 # Just for test, remove to get the paper numbers
+        # N_test = 4 # Just for test, remove to get the paper numbers
         Task1_images_dict = np.load(
             "/home/giang/Downloads/Gorilla/Task1/Task1_metadata.npy",
             allow_pickle="False",

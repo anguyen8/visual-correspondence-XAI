@@ -161,6 +161,7 @@ cython_debug/
 
 # auto generated folders
 tmp/
+src/__pycache__/
 pickle_files/
 wandb/
 KNN_dict_AP/

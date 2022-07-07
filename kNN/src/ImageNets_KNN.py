@@ -17,17 +17,6 @@ from torchvision.datasets import ImageFolder
 from tqdm import tqdm
 
 
-class GPUParams(object):
-    def __init__(self):
-        os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-        os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3,4,5,6,7"
-
-        print(torch.cuda.device_count())
-        print(torch.cuda.get_device_name(device=0))
-
-        self.device = torch.device("cuda:0")
-
-
 RunningParams = RunningParams()
 Dataset = Dataset()
 HelperFunctions = HelperFunctions()
@@ -66,7 +55,7 @@ imagenet_train_data = ImageFolder(
     root="/home/giang/Downloads/train/", transform=Dataset.imagenet_transform
 )
 
-print(RunningParams.__dict__)
+# print(RunningParams.__dict__)
 
 for val_dataset in [val_datasets]:
     if val_dataset == Dataset.CUB200:
@@ -270,7 +259,7 @@ for val_dataset in [val_datasets]:
                 correct_ones += pred.eq(target_c.data).sum().item()
 
         acc = 100 * correct_ones / N_test
-        print("{} Accuracy (%):".format(val_dataset), round(acc, 4))
+        print("ResNet-50: {} Accuracy (%):".format(val_dataset), round(acc, 4))
         print("############################################################")
 
     all_val_embds = []
@@ -314,9 +303,6 @@ for val_dataset in [val_datasets]:
     else:
         all_val_concatted = all_val_concatted.reshape(-1, 2048 * 7 * 7)
 
-    print(all_val_concatted.shape)
-    print(all_val_labels_concatted.shape)
-
     Query = torch.from_numpy(all_val_concatted)
     Query = Query.cuda()
     Query = F.normalize(Query, dim=1)
@@ -359,19 +345,13 @@ for val_dataset in [val_datasets]:
     scores = {}
     import torch
 
-    # K_values = [1,3,5,10,20,25,50,100,200]
     K_values = [20]
 
     for K in K_values:
         print(val_dataset)
-        KNN_dict = {}
-        KNN_dict["K_value"] = K
-        KNN_dict["Test_labels"] = labels_np
         correct_cnt = 0
         duplicate_cnt = 0
         for i in tqdm(range(N_test)):
-            KNN_dict[i] = {}
-            X_ts_list = []
             concat_ts = saved_results[i].cuda()
             sorted_ts = torch.argsort(concat_ts).cuda()
             sorted_1k = sorted_ts[-50:].cuda()
@@ -383,72 +363,13 @@ for val_dataset in [val_datasets]:
             gt_id = val_labels_np[i]
 
             prediction = torch.argmax(torch.bincount(labels_np[scores[i]]))
-
-            KNN_dict[i]["1000_NNs"] = sorted_1k.to("cpu")
-            KNN_dict[i]["NNs_id_count_dict"] = collections.Counter(
-                labels_np[scores[i]].numpy()
-            )
-
-            KNN_dict[i]["Predicted_id"] = prediction.to("cpu").numpy()
-            KNN_dict[i]["Predicted_wnid"] = [
-                k for (k, v) in data_compat.train_indices.items() if v == prediction
-            ][0]
-
-            # As we are subsetting train/val dataset, we need to convert back to the original ID of train/val dataset
-            Query = [
-                imagenet_val_data.samples[test_loader.dataset.indices[i]][0],
-                HelperFunctions.val_extract_wnid(
-                    imagenet_val_data.samples[test_loader.dataset.indices[i]][0]
-                ),
-            ]
-            if val_dataset in [
-                Dataset.IMAGENET_A,
-                Dataset.IMAGENET_R,
-                Dataset.OBJECTNET_5K,
-                Dataset.IMAGENET_HARD,
-                Dataset.IMAGENET_MULTI_OBJECT,
-                Dataset.IMAGENET_PILOT_VIS,
-            ]:
-                NNs = [
-                    [
-                        imagenet_train_data.samples[
-                            train_loader.dataset.indices[nn_idx]
-                        ][0],
-                        HelperFunctions.train_extract_wnid(
-                            imagenet_train_data.samples[
-                                train_loader.dataset.indices[nn_idx]
-                            ][0]
-                        ),
-                    ]
-                    for nn_idx in sorted_1k
-                ]
-            else:
-                # Save 1K NNs
-                NNs = [
-                    [
-                        imagenet_train_data.samples[nn_idx][0],
-                        HelperFunctions.train_extract_wnid(
-                            imagenet_train_data.samples[nn_idx][0]
-                        ),
-                    ]
-                    for nn_idx in sorted_1k
-                ]
-
-            KNN_dict[i]["Query"] = Query
-            KNN_dict[i]["NNs"] = NNs
-
-            KNN_dict[i]["wnid"] = [NN[1] for NN in NNs]
-            KNN_dict[i]["Unique_wnid_count"] = len(set(KNN_dict[i]["wnid"]))
-
             img_name = os.path.basename(Query[0])
             if RunningParams.IMAGENET_REAL is True:
-                KNN_dict[i]["GT_id"] = real_labels[img_name]
                 if prediction in real_labels[img_name]:
                     correctness = True
                 else:
                     correctness = False
             else:
-                KNN_dict[i]["GT_id"] = gt_id
                 if prediction == gt_id:
                     correctness = True
                 else:
@@ -456,35 +377,9 @@ for val_dataset in [val_datasets]:
 
             if correctness:
                 correct_cnt += 1
-                KNN_dict[i]["Output"] = True
-            else:
-                KNN_dict[i]["Output"] = False
 
         acc = 100 * correct_cnt / N_test
 
-        print("The accuracy at K = {} is {}".format(K, acc))
-        print("The duplicate count at K = {} is {}".format(K, duplicate_cnt))
+        print("The accuracy of kNN at K = {} is {}".format(K, acc))
 
-        if RunningParams.KNN_RESULT_SAVE and KNN_dict and K == 20:
-            if RunningParams.AP_FEATURE:
-                # Save and read the KNN dict
-                if RunningParams.Deformable_ProtoPNet is True:
-                    HelperFunctions.check_and_mkdir("KNN_dict_Deform_ProtoP_AP")
-                    np.save(
-                        "KNN_dict_Deform_ProtoP_AP/KNN_dict_{}.npy".format(val_dataset),
-                        KNN_dict,
-                    )
-                else:
-                    HelperFunctions.check_and_mkdir("KNN_dict_AP")
-                    np.save("KNN_dict_AP/KNN_dict_{}.npy".format(val_dataset), KNN_dict)
-            else:
-                # Save and read the KNN dict
-                if RunningParams.Deformable_ProtoPNet is True:
-                    HelperFunctions.check_and_mkdir("KNN_dict_Deform_ProtoP")
-                    np.save(
-                        "KNN_dict_Deform_ProtoP/KNN_dict_{}.npy".format(val_dataset),
-                        KNN_dict,
-                    )
-                else:
-                    HelperFunctions.check_and_mkdir("KNN_dict")
-                    np.save("KNN_dict/KNN_dict_{}.npy".format(val_dataset), KNN_dict)
+

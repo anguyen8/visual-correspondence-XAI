@@ -99,7 +99,7 @@ with torch.no_grad():
 
         random.seed(42)
         np.random.seed(42)
-        print("Running: {}".format(val_dataset))
+        print("Running {} ...".format(val_dataset))
 
         exported_results["dataset_name"] = val_dataset
         exported_results["prediction_info"] = {}
@@ -254,7 +254,7 @@ with torch.no_grad():
                         "CMYK",
                     ]:
                         if (
-                            val_dataset in Dataset.ADVERSARIAL_PATCH
+                            val_dataset == Dataset.ADVERSARIAL_PATCH_NEW
                             or val_dataset == Dataset.DAMAGE_NET
                             and path == Query[0]
                         ):
@@ -278,7 +278,7 @@ with torch.no_grad():
                             image = image.convert("RGB")
 
                         if (
-                            val_dataset in Dataset.ADVERSARIAL_PATCH
+                            val_dataset == Dataset.ADVERSARIAL_PATCH_NEW
                             or val_dataset == Dataset.DAMAGE_NET
                             and path == Query[0]
                         ):

@@ -44,7 +44,7 @@ sh run.sh -d cub200_test -v False -i True
 
 ### 2.3. Visualize correspondence-based explanations
 ### 2.3.1. Visualize EMD-Corr explanations
-Example #1, running in a bird image:
+Example #1, running on a CUB-200 bird image:
 ```bash
 cd EMD-Corr/
 # Now turn the visualization (v) option to True
@@ -64,6 +64,7 @@ sh run.sh -d imagenet1k-val -v True -i False
 ![](figs/ILSVRC2012_val_00003158.jpeg)
 
 ### 2.3.2. Visualize CHM-Corr explanations
+
 ### 2.4. Try it yourself
 #### 2.4.1. Run on your custom dataset
 * Step 1: Run kNN to get the shortlisted exemplars. 
@@ -82,10 +83,18 @@ or
 # CHM-Corr distance calculation between query vs. K exemplars
 ```
 * Step 3: Perform majority vote on the re-ranked exemplars to get the top-1 label.
-## 3. License
+
+## 3. Human study
+This [video](https://youtu.be/rJx-vGJBprw) walks you through the human study interface. We hope sharing all screens we carefully designed could help future research.
+If you wanna try out the UI on your device OR get more materials to replicate the experiment pipeline, hit me up at **nguyengiangbkhn@gmail.com**.
+
+We also share the [training screens](https://drive.google.com/drive/folders/1S0ipBx8H8JDM-tERImHVHFz-YDwE2gf6?usp=sharing) and [test trials](https://drive.google.com/drive/folders/1EWC3hgivx1SA0V2bL2toBnNZvtJWnoGu?usp=sharing) for both human studies on Google Drive.
+
+
+## 4. License
 [MIT](LICENSE)
 
-## 4. Citation   
+## 5. Citation   
 ```
 
 ```   

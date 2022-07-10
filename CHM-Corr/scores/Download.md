@@ -16,7 +16,7 @@ Download appropriate weight using:
 # ImageNet1K
 gdown 1-KdYgbb3t6V2DNGuRUpFCM9gO3l6umoM
 # ImageNet-Sketch
-gdown 1-KdYgbb3t6V2DNGuRUpFCM9gO3l6umoM
+gdown 1-PSlCPsdpqCExBsfclKcaDyhozH2HGTt
 # ImageNet-R
 gdown 1-SXRTvKyqEQxBmVPg2YJLU0VXQsAjoUt
 # DAmageNet

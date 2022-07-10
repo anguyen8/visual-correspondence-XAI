@@ -37,7 +37,7 @@ class EMDFunctions(object):
 
     @ staticmethod
     def compute_emd_sim(
-        K_value, fb_center, fb, stage, use_uniform, num_patch
+        K_value, fb_center, fb, use_uniform, num_patch
     ):
         cc_q2g_maps = []
         cc_g2q_maps = []
@@ -136,7 +136,7 @@ class EMDFunctions(object):
     @classmethod
     def compute_emd_distance(self, K_value, fb_center, fb, use_uniform, num_patch):
         sim, q2g_att, g2q_att, opt_plan = self.compute_emd_sim(
-            K_value, fb_center, fb, 1, use_uniform, num_patch
+            K_value, fb_center, fb, use_uniform, num_patch
         )
         if RunningParams.MIX_DISTANCE:
             cosine_sim = torch.einsum("chw,nchw->n", fb[0], fb_center)

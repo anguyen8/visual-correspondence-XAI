@@ -319,7 +319,7 @@ class iNaturalistPairedLayer4Extractor(torch.nn.Module):
         self.source_embedding = self.modelA(source_image)
         self.target_embedding = self.modelB(target_image)
 
-        return self.a_embeddings, self.b_embeddings
+        return self.source_embedding, self.target_embedding
 
     def __repr__(self):
         return "iNatPairedLayer4Extractor"

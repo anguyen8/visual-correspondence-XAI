@@ -242,13 +242,13 @@ def resnet50_features(pretrained=True, inat=True, **kwargs):
         if inat:
             # print('Loading iNat model')
             model_dict = torch.load(
-                model_dir + "/" + "BBN.iNaturalist2017.res50.90epoch.best_model.pth"
+                model_dir + "/../../weights/" + "BBN.iNaturalist2017.res50.90epoch.best_model.pth"
             )
         else:
-            # print('loading resnet (jon) model')
-            model_dict = torch.load(
-                model_dir + "/" + "resnet50_inat_pretrained_0.841.pth"
-            )
+            raise
+            # model_dict = torch.load(
+            #     model_dir + "../../weights/" + "resnet50_inat_pretrained_0.841.pth"
+            # )
 
         if inat:
             model_dict.pop("module.classifier.weight")
@@ -261,12 +261,13 @@ def resnet50_features(pretrained=True, inat=True, **kwargs):
                 ] = model_dict.pop(key)
 
         else:
-            model_dict = OrderedDict(
-                {
-                    name.replace("layers.", ""): value
-                    for name, value in model_dict.items()
-                }
-            )
+            raise
+            # model_dict = OrderedDict(
+            #     {
+            #         name.replace("layers.", ""): value
+            #         for name, value in model_dict.items()
+            #     }
+            # )
 
         model.load_state_dict(model_dict, strict=False)
 

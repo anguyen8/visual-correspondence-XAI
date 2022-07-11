@@ -20,3 +20,12 @@ godwn 18eP9DRKUp2HnsoHQD0jYasNgLGF7I_Fa
 # pas_full
 gdown 1ZKO29Ba9QRNenvFRGuIX1e9yUELKvW3S
 ```
+
+# Download links for iNaturalist pre-trained ResNet-50
+
+Download from [Google Drive](https://drive.google.com/file/d/1_wVPVamytcZFS7FJWkNzz3XMQh95SHRe/view?usp=sharing)
+
+
+```bash
+gdown 1_wVPVamytcZFS7FJWkNzz3XMQh95SHRe
+```

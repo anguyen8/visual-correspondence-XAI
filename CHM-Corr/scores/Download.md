@@ -23,4 +23,8 @@ gdown 1-SXRTvKyqEQxBmVPg2YJLU0VXQsAjoUt
 gdown 1-WGAlU3WvVz34NUKkTboEq2wIKajrTDt
 # Adversarial Patch
 gdown 1-HhKJwGCffOMe-WLtECgsCdxG25zkkmm
+# CUB iNaturalist
+gdown 1EMNacNPonhg1eL2jeQsbyyiePbh8F5Oo
+# CUB ResNet-50
+gdown 1FGOkOmRWBTUteltnydj0ViYJW1BqmfVX
 ```

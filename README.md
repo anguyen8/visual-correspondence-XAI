@@ -8,12 +8,19 @@ by [Giang Nguyen*](https://giangnguyen2412.github.io/), [Mohammad R. Taesiri*](h
 [![Conference](http://img.shields.io/badge/poster-4b44ce.svg)](https://www.dropbox.com/s/1neko0pjbexlsjf/p49.pdf?dl=0)
 </div> 
 
-_**tldr:** We propose two architectures of interpretable image classifiers that first explain, and then predict (as opposed to post-hoc explanation methods) by harnessing the visual correspondences between a query image and exemplars. 
+_**tldr:** We propose two architectures of interpretable image classifiers that first explain, and then predict by harnessing the visual correspondences between a query image and exemplars.
 Our models improve on several out-of-distribution (OOD) ImageNet datasets while achieving competitive performance on ImageNet than the black-box baselines (e.g. ImageNet-pretrained ResNet-50). 
-To quantify the interpretability, we conduct a large-scale human study (∼60 users per method per dataset) on ImageNet and CUB. 
-Our correspondence-based explanations led to human-alone image classification accuracy and human-AI team accuracy that are consistently better than that of kNN. 
-Our explanations help users better correctly reject AI’s wrong decisions than all other tested methods. 
-Interestingly, for the first time, we show that it is possible to achieve complementary human-AI team accuracy (i.e., that is higher than either AI-alone or human-alone), in ImageNet and CUB image classification tasks._   
+On a large-scale human study (∼60 users per method per dataset) on ImageNet and CUB, our correspondence-based explanations led to human-alone image classification accuracy and human-AI team accuracy that are consistently better than that of kNN. 
+We show that it is possible to achieve complementary human-AI team accuracy (i.e., that is higher than either AI-alone or human-alone), on ImageNet and CUB._   
+
+If you use this software, please consider citing:
+
+    @article{correspondence2022,
+      title={Visual correspondence-based explanations improve AI robustness and human-AI team accuracy},
+      author={Giang Nguyen, Mohammad Reza Taesiri, Anh Nguyen},
+      booktitle={XAI4CV workshop at CVPR},
+      year={2022}
+    }
 
 ## 1. Requirements
 ```
@@ -93,8 +100,3 @@ We also share the [training screens](https://drive.google.com/drive/folders/1S0i
 
 ## 4. License
 [MIT](LICENSE)
-
-## 5. Citation   
-```
-
-```   

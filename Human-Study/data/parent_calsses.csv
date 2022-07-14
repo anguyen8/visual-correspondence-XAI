@@ -1,0 +1,32 @@
+parent_parsed,Real GTs - flat
+Abstraction,['Street Sign']
+Amphibian,"['Axolotl', 'European Fire Salamander', 'Tree Frog']"
+Aquatic Vertebrate,['Goldfish']
+Bird,"['American Egret', 'Bulbul', 'Cock', 'Oystercatcher', 'Red-Backed Sandpiper', 'Ruffed Grouse']"
+Carnivore,"['Beagle', 'Black-And-Tan Coonhound', 'Black-Footed Ferret', 'Bloodhound', 'Bluetick', 'Border Terrier', 'Bouvier Des Flandres', 'Bull Mastiff', 'Collie', 'Coyote', 'Curly-Coated Retriever', 'English Foxhound', 'English Springer', 'Entlebucher', 'Eskimo Dog', 'Flat-Coated Retriever', 'French Bulldog', 'German Short-Haired Pointer', 'Great Dane', 'Great Pyrenees', 'Greater Swiss Mountain Dog', 'Irish Water Spaniel', 'Kelpie', 'Lakeland Terrier', 'Lhasa', 'Malamute', 'Miniature Poodle', 'Norfolk Terrier', 'Otter', 'Pembroke', 'Polecat', 'Redbone', 'Rhodesian Ridgeback', 'Rottweiler', 'Schipperke', 'Scotch Terrier', 'Scottish Deerhound', 'Sealyham Terrier', 'Shetland Sheepdog', 'Siberian Husky', 'Staffordshire Bullterrier', 'Standard Poodle', 'Standard Schnauzer', 'Tabby', 'Tibetan Terrier', 'Tiger Cat', 'Toy Poodle', 'Vizsla', 'Welsh Springer Spaniel', 'Yorkshire Terrier']"
+Commodity,"['Abaya', 'Academic Gown', 'Dishwasher', 'Dutch Oven', 'Espresso Maker', 'Microwave', 'Military Uniform', 'Miniskirt', 'Washer']"
+Connection,['Chain']
+Container,"['Ambulance', 'Cassette', 'Envelope', 'Pitcher', 'Purse', 'Shopping Basket', 'Soap Dispenser', 'Soup Bowl', 'Tank', 'Wallet', 'Washbasin', 'Whiskey Jug']"
+Conveyance,"['Dogsled', 'Schooner', 'Stretcher', 'Trolleybus', 'Yawl']"
+Covering,"['Dome', 'Doormat', 'Pickelhaube', 'Prayer Rug', 'Scabbard', 'Shower Curtain']"
+Decoration,['Necklace']
+Device,"['Analog Clock', 'Car Wheel', 'Cello', 'Combination Lock', 'Padlock', 'Projectile', 'Radiator', 'Upright', 'Wall Clock']"
+Equipment,"['Balance Beam', 'Cd Player', 'Dumbbell', 'Horizontal Bar', 'Monitor', 'Polaroid Camera']"
+Fabric,['Wool']
+Fungus,['Hen-Of-The-Woods']
+Furnishing,"['Cradle', 'Crib', 'Desk', 'Entertainment Center']"
+Geological Formation,"['Coral Reef', 'Lakeside', 'Seashore']"
+Implement,"['Ballpoint', 'Plow', 'Plunger', 'Quill', 'Teapot']"
+Invertebrate,"['Barn Spider', 'Bee', 'Cricket', 'Damselfly', 'Dragonfly', 'Dungeness Crab', 'Long-Horned Beetle', 'Mantis', 'Sea Slug', 'Snail', 'Sulphur Butterfly']"
+Lagomorph,['Wood Rabbit']
+Matter,"['Artichoke', 'Bell Pepper', 'Cheeseburger', 'Cucumber', 'Hay', 'Plate', 'Pretzel']"
+Natural Object,"['Banana', 'Corn', 'Lemon', 'Sandbar']"
+Pachyderm,"['African Elephant', 'Indian Elephant']"
+Plaything,['Teddy']
+Primate,"['Gibbon', 'Gorilla', 'Langur', 'Siamang', 'Titi']"
+Reptile,"['African Crocodile', 'Alligator Lizard', 'American Chameleon', 'Banded Gecko', 'Boa Constrictor', 'Frilled Lizard', 'Green Mamba', 'Green Snake', 'Mud Turtle', 'Night Snake', 'Rock Python', 'Terrapin']"
+Rodent,['Beaver']
+Structure,"['Bakery', 'Bannister', 'Church', 'Cliff Dwelling', 'Dam', 'Dock', 'Grocery Store', 'Megalith', 'Plate Rack', 'Stupa', 'Totem Pole']"
+System,['Radio']
+Toiletry,"['Hair Spray', 'Lotion', 'Sunscreen']"
+Ungulate,"['Bighorn', 'Bison', 'Hog', 'Impala', 'Llama', 'Water Buffalo', 'Wild Boar']"

@@ -34,43 +34,61 @@ pip install seaborn
 Since each classifier was developed independently, you can also run ```conda env create -f [classifier_name]/env.yml``` to create the virtual environment before running.
 
 ## 2. How to run
-### 2.1 Reproduce results
+### 2.1 Reproduce classifiers' performance
+
+To reproduce the accuracy of image classifiers in **Table 1**, please run:
 ```bash
 cd [classifier_name]
 sh test.sh
 ```
-### 2.2. Reproduce result on a specific dataset
+
+### 2.2. Reproduce performance on a specific dataset
+To reproduce the accuracy of image classifiers on a specific dataset (e.g. CUB200) in **Table 1**, please run:
 ```bash
 cd [classifier_name]
-sh run ?  # To see available options
+sh run -d [DATASET] -v False -i [True/False]
 ```
-Example: Running ```EMD-Corr``` for **CUB-200** using iNaturalist-pretrained ResNet-50 feature.
+
+To see available options, run:
+```bash
+sh run ?  # 
+```
+
+For example, running ```EMD-Corr``` for **CUB-200** using iNaturalist-pretrained ResNet-50 feature.
 ```bash
 sh run.sh -d cub200_test -v False -i True
 ```
 
 ### 2.3. Visualize correspondence-based explanations
-### 2.3.1. Visualize EMD-Corr explanations
-Example #1, running on a CUB-200 bird image:
+
+#### 2.3.1. Visualize EMD-Corr explanations
+To visualize correspondence-based explanations by EMD-Corr, just simply run:
 ```bash
 cd EMD-Corr/
-# Now turn the visualization (v) option to True
+# Turn the visualization (v) option to True
+sh run -d [DATASET] -v True -i [True/False]
+```
+
+For example, running on CUB-200 bird images:
+```bash
 sh run.sh -d cub200_test -v True -i True
 ```
+then we get:
 ![](figs/Painted_Bunting_0004_16641.jpeg)
-The first row is the exemplars retrieved by kNN while the second one shows the re-ranked exemplars by EMD-Corr classifier.
+* The first row is the exemplars retrieved by kNN while the second one shows the re-ranked exemplars by EMD-Corr classifier.
 The third row (query) and the fourth row (EMD-Corr exemplars) show how the query matches each of the exemplars given by comparing the same-color boxes (e.g. face to face, neck to neck).
 Both kNN and EMD-Corr correctly classified the bird.
 
-Example #2, running on a general image from ImageNet validation set:
+If you want to visualize explanations for general images from ImageNet, run:
 ```bash
-cd EMD-Corr/
-# Now turn the visualization (v) option to True and use torchvision ImageNet-pretrained ResNet-50 feature
+# Now turn the visualization (v) option to True and use torchvision ImageNet-pretrained ResNet-50 feature (i - False)
 sh run.sh -d imagenet1k-val -v True -i False
 ```
-![](figs/ILSVRC2012_val_00003158.jpeg)
 
-### 2.3.2. Visualize CHM-Corr explanations
+![](figs/ILSVRC2012_val_00003158.jpeg)
+* EMD-Corr matches these ```panda``` pairs by looking at facial features. 
+
+#### 2.3.2. Visualize CHM-Corr explanations
 
 ### 2.4. Try it yourself
 #### 2.4.1. Run on your custom dataset
@@ -92,7 +110,22 @@ or
 * Step 3: Perform majority vote on the re-ranked exemplars to get the top-1 label.
 
 ## 3. Human study
+### 3.1. ImageNet clean data for human study
+
+We filtered out ImageNet validation images
+
+* having no labels based on ImageNetReaL labels.
+
+* having duplicates with the ImageNet training set.
+
+* having grayscale color or low resolution (i.e. H or W < 224).
+
+to get 44,424 clean images as described in Sec. 2.3.2 of our paper. We share the IDs of these clean images in [a text file](https://github.com/anguyen8/visual-correspondence-XAI/tree/main/EMD-Corr/clean_images).
+
+### 3.2. Human study interface
+
 This [video](https://youtu.be/rJx-vGJBprw) walks you through the human study interface. We hope sharing all screens we carefully designed could help future research.
+
 If you wanna try out the UI on your device OR get more materials to replicate the experiment pipeline, hit me up at **nguyengiangbkhn@gmail.com**.
 
 We also share the [training screens](https://drive.google.com/drive/folders/1S0ipBx8H8JDM-tERImHVHFz-YDwE2gf6?usp=sharing) and [test trials](https://drive.google.com/drive/folders/1EWC3hgivx1SA0V2bL2toBnNZvtJWnoGu?usp=sharing) for both human studies on Google Drive.

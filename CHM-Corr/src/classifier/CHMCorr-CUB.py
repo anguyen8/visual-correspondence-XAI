@@ -176,7 +176,7 @@ class CHMGridTransfer:
         self.transferred_points = np.vstack(transferred_points)
 
     def compule_embeddings(self, test_dl):
-        paired_extractor = self.layer_4_extractor()  # DeformablePairedLayer4Extractor()
+        paired_extractor = self.layer_4_extractor()
 
         source_embeddings = []
         target_embeddings = []
@@ -593,7 +593,7 @@ def rerank_and_save(
     output_dir,
     layer_4_extractor,
     mask_dict,
-    folder_to_label
+    folder_to_label,
 ):
     """
     Creates a reranker, save the results inside a pickle file and returns nothing
@@ -622,7 +622,7 @@ def rerank_and_save(
         cosine_source_transform=cos_src_t,
         cosine_target_transform=cos_tgt_t,
         layer_4_extractor=layer_4_extractor,
-        batch_size = BS,
+        batch_size=BS,
     )
 
     # Building the reranker
@@ -630,14 +630,20 @@ def rerank_and_save(
     # Make a ModifiableCHMResults
     exported_reranker = reranker.export()
     # Get the Mask (if any)
-    mask_key = '/'.join(exported_reranker.q.split('/')[-2:])
+    mask_key = "/".join(exported_reranker.q.split("/")[-2:])
     if mask_dict is not None:
         mask = mask_dict[mask_key]
     else:
         mask = None
     # Export A details for visualizations
     output = export_visualizations_results(
-        reranker_output=exported_reranker, knn_results=knn_support_set, folder_to_label=folder_to_label, mask=mask, K=K, N=N, T=T
+        reranker_output=exported_reranker,
+        knn_results=knn_support_set,
+        folder_to_label=folder_to_label,
+        mask=mask,
+        K=K,
+        N=N,
+        T=T,
     )
 
     with open(f"{output_dir}/reranker_{QID}.pkl", "wb") as f:
@@ -647,7 +653,10 @@ def rerank_and_save(
 def main():
     parser = argparse.ArgumentParser(description="CHM Classifier")
     parser.add_argument(
-        "--transform", help="Type of Transform (single or multi)", type=str, default="single"
+        "--transform",
+        help="Type of Transform (single or multi)",
+        type=str,
+        default="single",
     )
     parser.add_argument("--knn", help="Path to kNN Scores", type=str, required=True)
     parser.add_argument("--train", help="Path to Train folder", type=str, required=True)
@@ -663,8 +672,12 @@ def main():
     parser.add_argument("--bs", help="Value for batch size", type=int, default=128)
     parser.add_argument("--start", help="Start Index", type=int, default=0)
     parser.add_argument("--end", help="End Index", type=int, default=1)
-    parser.add_argument("--model", help="Which model to use (inat, resnet50)", type=str, required=True)
-    parser.add_argument("--mask", help="Path to a custom Mask pickle file", type=str, default=None)
+    parser.add_argument(
+        "--model", help="Which model to use (inat, resnet50)", type=str, required=True
+    )
+    parser.add_argument(
+        "--mask", help="Path to a custom Mask pickle file", type=str, default=None
+    )
 
     args = parser.parse_args()
 
@@ -681,7 +694,7 @@ def main():
 
     mask_dict = None
     if args.mask:
-        with open(args.mask, 'rb') as f:
+        with open(args.mask, "rb") as f:
             mask_dict = pickle.load(f)
 
     extractor = None
@@ -712,7 +725,7 @@ def main():
             args.out,
             layer_4_extractor=extractor,
             mask_dict=mask_dict,
-            folder_to_label=folder_to_label
+            folder_to_label=folder_to_label,
         )
 
 

@@ -1,3 +1,6 @@
+# Original Author: Jonathan Donnellya (jonathan.donnelly@maine.edu)
+# Modified by Mohammad Reza Taesiri (mtaesiri@gmail.com)
+
 import torch
 import torch.nn as nn
 from collections import OrderedDict
@@ -242,7 +245,9 @@ def resnet50_features(pretrained=True, inat=True, **kwargs):
         if inat:
             # print('Loading iNat model')
             model_dict = torch.load(
-                model_dir + "/../../weights/" + "BBN.iNaturalist2017.res50.90epoch.best_model.pth"
+                model_dir
+                + "/../../weights/"
+                + "BBN.iNaturalist2017.res50.90epoch.best_model.pth"
             )
         else:
             raise

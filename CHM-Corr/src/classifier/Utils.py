@@ -6,7 +6,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.datasets import ImageFolder
 import torchvision.transforms as transforms
-from DeformableResNet import resnet50_features
+from FeatureExtractors import resnet50_features
 
 to_np = lambda x: x.data.to("cpu").numpy()
 
@@ -156,9 +156,9 @@ class KNNSupportSet:
             for I in range(len(self.knn_scores))
         ]
         knn_accuracy = (
-                100
-                * np.sum((np.asarray(knn_predictions) == self.val_labels))
-                / len(self.val_labels)
+            100
+            * np.sum((np.asarray(knn_predictions) == self.val_labels))
+            / len(self.val_labels)
         )
         return knn_predictions, knn_accuracy
 
@@ -262,6 +262,7 @@ class PairedLayer4Extractor(torch.nn.Module):
     """
     Extracting layer-4 embedding for source and target images using ResNet-50 features
     """
+
     def __init__(self):
         super(PairedLayer4Extractor, self).__init__()
 
@@ -300,6 +301,7 @@ class iNaturalistPairedLayer4Extractor(torch.nn.Module):
     """
     Extracting layer-4 embedding for source and target images using iNaturalist ResNet-50 features
     """
+
     def __init__(self):
         super(iNaturalistPairedLayer4Extractor, self).__init__()
 

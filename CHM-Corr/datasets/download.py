@@ -1,5 +1,3 @@
-#!/bin/python3
-
 import gdown
 import zipfile
 import os

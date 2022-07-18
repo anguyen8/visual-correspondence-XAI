@@ -90,6 +90,10 @@ sh run.sh -d imagenet1k-val -v True -i False
 
 #### 2.3.2. Visualize CHM-Corr explanations
 
+We provide a notebook to generate a visualization of the CHM-Corr classifier's output. Please first run CHM-Corr using the guide provided  [Here](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/README.md), then use [this notebook](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/src/visualization/visualization.ipynb) to generate the visualizations.
+
+![](figs/CHM-Corr-sample-visualization.jpeg)
+
 ### 2.4. Try it yourself
 #### 2.4.1. Run on your custom dataset
 * Step 1: Run kNN to get the shortlisted exemplars. 
@@ -103,11 +107,8 @@ from emd_utils import EMDFunctions
 emd_distance, q2g_att, g2q_att, opt_plan = EMDFunctions.compute_emd_distance(K=50, fb_center, fb, use_uniform=False, num_patch=5)
 ```
 or 
-* Re-rank the exemplars using **CHM** patch-wise comparison.
-```python
-# CHM-Corr distance calculation between query vs. K exemplars
-```
-* Step 3: Perform majority vote on the re-ranked exemplars to get the top-1 label.
+* For the **CHM-Corr** classifier, a detailed description is avilable [Here](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/README.md).
+
 
 ## 3. Human study
 ### 3.1. ImageNet clean data for human study

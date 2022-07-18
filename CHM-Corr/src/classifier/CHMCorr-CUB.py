@@ -1,4 +1,4 @@
-# CHM Cassifier for the CUB dataset
+# CHM-Corr Cassifier for the CUB dataset
 import os
 import sys
 import argparse
@@ -10,6 +10,7 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
+from torchvision.datasets import ImageFolder
 from tqdm import tqdm
 
 sys.path.insert(1, os.path.join(sys.path[0], "chmnet"))
@@ -42,9 +43,12 @@ chm_args = dict(
         "alpha": [0.05, 0.1],
         "img_size": 240,
         "ktype": "full",
-        "load": "../../weights/pas_full.pt",
+        "load": os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), "../../weights/pas_full.pt"
+        ),
     }
 )
+
 
 # Transform for displaying images
 display_transform = transforms.Compose(
@@ -650,6 +654,34 @@ def rerank_and_save(
         pickle.dump(output, f)
 
 
+def report_accuracy(files):
+    chm_counter = 0
+    knn_counter = 0
+
+    for r_file in tqdm(files):
+        with open(r_file, "rb") as f:
+            r = pickle.load(f)
+        chm_wnid = r["chm-nearest-neighbors"][0].split("/")[-2]
+        knn_wnid = r["knn-nearest-neighbors"][0].split("/")[-2]
+
+        if chm_wnid == r["gt_wnid"]:
+            chm_counter += 1
+
+        if knn_wnid == r["gt_wnid"]:
+            knn_counter += 1
+
+    print(
+        "CHM-Corr: ",
+        chm_counter,
+        "Corrects",
+        "Accuracy: ",
+        100 * chm_counter / len(files),
+    )
+    print(
+        "kNN: ", knn_counter, "Corrects", "Accuracy: ", 100 * knn_counter / len(files)
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description="CHM Classifier")
     parser.add_argument(
@@ -670,8 +702,6 @@ def main():
     parser.add_argument("--K", help="Value for K", type=int, default=20)
     parser.add_argument("--T", help="Value for threshold", type=float, default=0.55)
     parser.add_argument("--bs", help="Value for batch size", type=int, default=128)
-    parser.add_argument("--start", help="Start Index", type=int, default=0)
-    parser.add_argument("--end", help="End Index", type=int, default=1)
     parser.add_argument(
         "--model", help="Which model to use (inat, resnet50)", type=str, required=True
     )
@@ -686,6 +716,10 @@ def main():
         knn_results = pickle.load(f)
 
     knn_support_set = KNNSupportSet(args.train, args.val, knn_results)
+
+    # Get size of the validation set
+    validation_set_size = len(ImageFolder(args.val))
+    print(f"Images in the validation set: {validation_set_size}")
 
     # Get Transforms
     chm_src_t, chm_tgt_t, cos_src_t, cos_tgt_t = get_transforms(
@@ -707,7 +741,9 @@ def main():
     list_of_birds = os.listdir(args.train)
     folder_to_label = {b: b for b in list_of_birds}
 
-    for i in tqdm(range(args.start, args.end)):
+    outputs = []
+
+    for i in tqdm(range(validation_set_size)):
         rerank_and_save(
             i,
             args.train,
@@ -727,6 +763,10 @@ def main():
             mask_dict=mask_dict,
             folder_to_label=folder_to_label,
         )
+        outputs.append(f"{args.out}/reranker_{i}.pkl")
+
+    print("Calculating final accuracy")
+    report_accuracy(outputs)
 
 
 if __name__ == "__main__":

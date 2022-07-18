@@ -43,6 +43,9 @@ sh test.sh
 ```
 
 ### 2.2. Reproduce performance on a specific dataset
+
+#### 2.2.1. For the EMD-Corr classifier
+
 To reproduce the accuracy of image classifiers on a specific dataset (e.g. CUB200) in **Table 1**, please run:
 ```bash
 cd [classifier_name]
@@ -59,7 +62,12 @@ For example, running ```EMD-Corr``` for **CUB-200** using iNaturalist-pretrained
 sh run.sh -d cub200_test -v False -i True
 ```
 
+#### 2.2.2. For the CHM-Corr classifier
+
+For the **CHM-Corr** classifier, a detailed description is avilable [Here](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/README.md).
+
 ### 2.3. Visualize correspondence-based explanations
+
 
 #### 2.3.1. Visualize EMD-Corr explanations
 To visualize correspondence-based explanations by EMD-Corr, just simply run:

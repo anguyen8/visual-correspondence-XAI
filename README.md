@@ -90,10 +90,6 @@ sh run.sh -d imagenet1k-val -v True -i False
 
 #### 2.3.2. Visualize CHM-Corr explanations
 
-We provide a notebook to generate a visualization of the CHM-Corr classifier's output. Please first run CHM-Corr using the guide provided  [Here](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/README.md), then use [this notebook](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/src/visualization/visualization.ipynb) to generate the visualizations.
-
-![](figs/CHM-Corr-sample-visualization.jpeg)
-
 ### 2.4. Try it yourself
 #### 2.4.1. Run on your custom dataset
 * Step 1: Run kNN to get the shortlisted exemplars. 
@@ -107,8 +103,11 @@ from emd_utils import EMDFunctions
 emd_distance, q2g_att, g2q_att, opt_plan = EMDFunctions.compute_emd_distance(K=50, fb_center, fb, use_uniform=False, num_patch=5)
 ```
 or 
-* For the **CHM-Corr** classifier, a detailed description is avilable [Here](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/README.md).
-
+* Re-rank the exemplars using **CHM** patch-wise comparison.
+```python
+# CHM-Corr distance calculation between query vs. K exemplars
+```
+* Step 3: Perform majority vote on the re-ranked exemplars to get the top-1 label.
 
 ## 3. Human study
 ### 3.1. ImageNet clean data for human study
@@ -121,23 +120,17 @@ We filtered out ImageNet validation images
 
 * having grayscale color or low resolution (i.e. H or W < 224).
 
-to get 44,424 clean images as described in Sec. 2.3.2 of our paper. We share the IDs of these clean images in [a text file](https://github.com/anguyen8/visual-correspondence-XAI/tree/main/EMD-Corr/clean_images).
+to get 44,424 clean images as described in Sec. 2.3.2 of our paper. We share the IDs of these clean images in [a text file](https://github.com/anguyen8/visual-correspondence-XAI/blob/b234be2d4cc42e865682c00a86cd63e2b0a9fe9c/EMD-Corr/clean_images/ImageNet_Clean.txt).
 
 ### 3.2. Human study interface
 
-This [video](https://youtu.be/rJx-vGJBprw) walks you through the human study interface. We hope sharing all screens we carefully designed could help future research.
+We recorded a [video](https://youtu.be/rJx-vGJBprw) to walk you through the human study interface (Introduction &rarr; Training &rarr; Validation &rarr; Test) &mdash; described in Sec. 2.3.3. You may also notice the tricks we applied in the experiments to improve crowdsourcing data quality as [mentioned](https://twitter.com/BeOnlineConf/status/1544355623743225859/photo/1) by [BeOnline](https://twitter.com/BeOnlineConf). 
 
-If you wanna try out the UI on your device OR get more materials to replicate the experiment pipeline, hit me up at **nguyengiangbkhn@gmail.com**.
+We hope sharing all screens we carefully designed could help future research perform human studies easier.
+
+If you wanna try out the UI on your device or get more materials to replicate the experiment pipeline, please contact us.
 
 We also share the [training screens](https://drive.google.com/drive/folders/1S0ipBx8H8JDM-tERImHVHFz-YDwE2gf6?usp=sharing) and [test trials](https://drive.google.com/drive/folders/1EWC3hgivx1SA0V2bL2toBnNZvtJWnoGu?usp=sharing) for both human studies on Google Drive.
 
-### 3.3. Experimental human study interface
-
-We also made an experimental UI for internal testing, which can be accessed on the Hugginface spaces. 
-
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-ImageNet-blue)](https://huggingface.co/spaces/XAI/VisualCorrespondenceHumanStudy)
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-CUB-red)](https://huggingface.co/spaces/XAI/VisualCorrespondenceHumanStudy-CUB)
-
-
-## 4. License
+## 5. License
 [MIT](LICENSE)

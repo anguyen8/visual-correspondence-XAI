@@ -11,6 +11,7 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
+from torchvision.datasets import ImageFolder
 from tqdm import tqdm
 
 sys.path.insert(1, os.path.join(sys.path[0], "chmnet"))

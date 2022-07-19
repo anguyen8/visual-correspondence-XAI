@@ -31,7 +31,7 @@ python src/classifier/CHMCorr.py  --train ~/dataset/ImageNet-Sketch/            
 # DAmageNet (See Symlink.ipynb)
 python src/classifier/CHMCorr.py  --train ~/dataset/symlink_parent/DAmageNet/   --val ~/dataset/DAmageNet/ --out ~/output/DAmageNet --knn scores/DAmageNet.pickle  --transform multi
 # Adversarials Patch
-python src/classifier/CHMCorr.py  --train ~/dataset/ImageNet/train/             --val ~/dataset/Adversarials --1out ~/output/Adversarials --knn scores/Adversarials.pickle  --transform multi
+python src/classifier/CHMCorr.py  --train ~/dataset/ImageNet/train/             --val ~/dataset/Adversarials --out ~/output/Adversarials --knn scores/Adversarials.pickle  --transform multi
 ```
 
 * For the CUB dataset

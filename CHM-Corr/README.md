@@ -38,11 +38,11 @@ python src/classifier/CHMCorr.py  --train ~/dataset/ImageNet/train/             
 
 ```bash
 # Using iNat Backbone
-python src/classifier/CHMCorr-CUB.py --train ~/dataset/CUB_200_2011/train/ --val ~/dataset/CUB_200_2011/test/ --out ~/output/CUB-iNat/ --knn scores/CUB-iNaturalist.pickle  --model inat
+python src/classifier/CHMCorr-CUB.py --train ~/dataset/CUB_200_2011/train/ --val ~/dataset/CUB_200_2011/test/ --out ~/output/CUB-iNat/ --knn ./scores/CUB-iNaturalist.pickle  --model inat
 # Using ResNet-50 Backbone
-python src/classifier/CHMCorr-CUB.py --train ~/dataset/CUB_200_2011/train/ --val ~/dataset/CUB_200_2011/test/ --out ~/output/CUB-ResNet/ --knn scores/scores/CUB-ResNet-50.pickle  --model resnet50
+python src/classifier/CHMCorr-CUB.py --train ~/dataset/CUB_200_2011/train/ --val ~/dataset/CUB_200_2011/test/ --out ~/output/CUB-ResNet/ --knn ./scores/CUB-ResNet-50.pickle  --model resnet50
 # CHM-Corr+ : Providing a mask 
-python src/classifier/CHMCorr-CUB.py --train ~/dataset/CUB_200_2011/train/ --val ~/dataset/CUB_200_2011/test/ --out ~/output/CUB-iNat-Masked/ --knn scores/CUB-iNaturalist.pickle  --model inat --mask masks/CUB-Mask-Top5.pkl
+python src/classifier/CHMCorr-CUB.py --train ~/dataset/CUB_200_2011/train/ --val ~/dataset/CUB_200_2011/test/ --out ~/output/CUB-iNat-Masked/ --knn ./scores/CUB-iNaturalist.pickle  --model inat --mask masks/CUB-Mask-Top5.pkl
 ```
 
 ## Visualizing CHM-Corr results

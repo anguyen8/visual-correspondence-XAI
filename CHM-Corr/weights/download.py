@@ -24,7 +24,7 @@ gdown.download(
 
 print("iNaturalist ResNet-50")
 gdown.download(
-    url="https://drive.google.com/uc?id=1_wVPVamytcZFS7FJWkNzz3XMQh95SHRe",
+    url="https://drive.google.com/uc?id=1URkZd1qlFolDeS77lRTNXybG8a87aeAO",
     output="BBN.iNaturalist2017.res50.90epoch.best_model.pth.pt",
     quiet=False,
 )

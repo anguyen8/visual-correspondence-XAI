@@ -1,8 +1,16 @@
 # Download links for the Adversarials dataset
 
-Using `gdown`:
+## Download using `gdown`
+
+Install `gdown` using the code below:
+
+```bash
+pip install --upgrade gdown
+```
+
+Download using:
 
 ```bash
 # Adversarials
-gdown 1oehcahqVokBH-nfGTEdEgdK7Uc7vmzRt
+gdown 1EALgEHzAJxS1oLo18-WOQ9jeHAOInTin
 ```

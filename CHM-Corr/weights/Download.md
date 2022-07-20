@@ -23,9 +23,9 @@ gdown 1ZKO29Ba9QRNenvFRGuIX1e9yUELKvW3S
 
 # Download links for iNaturalist pre-trained ResNet-50
 
-Download from [Google Drive](https://drive.google.com/file/d/1_wVPVamytcZFS7FJWkNzz3XMQh95SHRe/view?usp=sharing)
+Download from [Google Drive](https://drive.google.com/file/d/1URkZd1qlFolDeS77lRTNXybG8a87aeAO/view?usp=sharing)
 
 
 ```bash
-gdown 1_wVPVamytcZFS7FJWkNzz3XMQh95SHRe
+gdown 1URkZd1qlFolDeS77lRTNXybG8a87aeAO
 ```

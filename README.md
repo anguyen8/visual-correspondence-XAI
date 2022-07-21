@@ -121,7 +121,7 @@ emd_distance, q2g_att, g2q_att, opt_plan = EMDFunctions.compute_emd_distance(K=5
 For the **CHM-Corr** classifier, a detailed description is available in [`CHM-Corr/README.md`](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/README.md).
 
 
-## 3. Human study
+## 3. Human study (XAI human evaluation)
 ### 3.1. ImageNet clean data for human study
 
 We filtered out ImageNet validation images

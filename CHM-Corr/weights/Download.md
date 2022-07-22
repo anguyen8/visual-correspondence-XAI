@@ -1,6 +1,6 @@
 # Download links for Pre-trained CHMNet network
 
-Download from [Google Drive](https://drive.google.com/drive/folders/10HoAJeFA4NhMi3m4A-t3UYD7T2tXy_eH?usp=sharing)
+CHM-Corr uses CHMNet for finding correspondence points between two images. Please visit [CHMNet's Github repository](https://github.com/juhongm999/chm) for further details. For reproducibility purposes, we also share the weights we used for CHMNet in a separate [Google Drive](https://drive.google.com/drive/folders/10HoAJeFA4NhMi3m4A-t3UYD7T2tXy_eH?usp=sharing) link.
 
 ## Download using `gdown`
 

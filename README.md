@@ -42,7 +42,7 @@ cd [classifier_name]
 sh test.sh
 ```
 
-For the bird classification (CUB dataset) using iNaturalist pretrained ResNet-50 please refere to [`ResNet-50/CUB-iNaturalist/README.md`](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/ResNet-50/CUB-iNaturalist/README.md)
+For the bird classification (CUB dataset) using iNaturalist pretrained ResNet-50 please refere to [`ResNet-50/README.md`](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/ResNet-50/README.md)
 
 
 ### 2.2. Reproduce performance on a specific dataset

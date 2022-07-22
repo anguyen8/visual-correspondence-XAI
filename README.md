@@ -154,6 +154,10 @@ We also made an experimental UI for internal testing, which can be accessed on t
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-ImageNet-blue)](https://huggingface.co/spaces/XAI/VisualCorrespondenceHumanStudy)
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-CUB-red)](https://huggingface.co/spaces/XAI/VisualCorrespondenceHumanStudy-CUB)
 
+## 4.Acknowledgment
 
-## 4. License
+* The CHM-Corr classifier relies on [CHMNet](https://github.com/juhongm999/chm) to find correspondence points between two images.
+* The code for feature extraction using iNaturalist pretraind ResNet-50 was kindly provided by [Jonathan Donnellya](mailto:jonathan.donnelly@maine.edu)
+
+## 5. License
 [MIT](LICENSE)

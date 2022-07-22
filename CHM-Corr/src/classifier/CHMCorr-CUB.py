@@ -44,7 +44,7 @@ chm_args = dict(
         "img_size": 240,
         "ktype": "full",
         "load": os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "../../weights/pas_full.pt"
+            os.path.dirname(os.path.realpath(__file__)), "../../weights/pas_psi.pt"
         ),
     }
 )
@@ -744,6 +744,8 @@ def main():
     outputs = []
 
     for i in tqdm(range(validation_set_size)):
+        if os.path.exists(f"{args.out}/reranker_{i}.pkl"):
+            continue
         rerank_and_save(
             i,
             args.train,

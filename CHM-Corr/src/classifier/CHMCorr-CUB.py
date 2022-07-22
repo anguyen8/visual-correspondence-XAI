@@ -42,7 +42,7 @@ chm_args = dict(
     {
         "alpha": [0.05, 0.1],
         "img_size": 240,
-        "ktype": "full",
+        "ktype": "psi",
         "load": os.path.join(
             os.path.dirname(os.path.realpath(__file__)), "../../weights/pas_psi.pt"
         ),

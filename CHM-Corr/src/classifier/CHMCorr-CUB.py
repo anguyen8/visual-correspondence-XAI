@@ -698,10 +698,10 @@ def main():
     parser.add_argument(
         "--out", help="Path to save output file", type=str, required=True
     )
-    parser.add_argument("--N", help="Value for N", type=int, default=200)
+    parser.add_argument("--N", help="Value for N", type=int, default=50)
     parser.add_argument("--K", help="Value for K", type=int, default=20)
     parser.add_argument("--T", help="Value for threshold", type=float, default=0.55)
-    parser.add_argument("--bs", help="Value for batch size", type=int, default=128)
+    parser.add_argument("--bs", help="Value for batch size", type=int, default=64)
     parser.add_argument(
         "--model", help="Which model to use (inat, resnet50)", type=str, required=True
     )

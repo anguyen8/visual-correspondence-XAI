@@ -266,32 +266,23 @@ class PairedLayer4Extractor(torch.nn.Module):
     def __init__(self):
         super(PairedLayer4Extractor, self).__init__()
 
-        self.modelA = models.resnet50(pretrained=True)
-        self.modelA.cuda()
-        self.modelA.eval()
-
-        self.modelB = models.resnet50(pretrained=True)
-        self.modelB.cuda()
-        self.modelB.eval()
+        self.model = models.resnet50(pretrained=True)
+        self.model.cuda()
+        self.model.eval()
 
         self.a_embeddings = None
-        self.b_embeddings = None
 
         def a_hook(module, input, output):
             self.a_embeddings = output
 
-        def b_hook(module, input, output):
-            self.b_embeddings = output
-
-        self.modelA._modules.get("layer4").register_forward_hook(a_hook)
-        self.modelB._modules.get("layer4").register_forward_hook(b_hook)
+        self.model._modules.get("layer4").register_forward_hook(a_hook)
 
     def forward(self, inputs):
-        inputA, inputB = inputs
-        self.modelA(inputA)
-        self.modelB(inputB)
-
-        return self.a_embeddings, self.b_embeddings
+        x, y = inputs
+        z = torch.cat((x, y), dim=0)
+        self.model(z)
+        tensor1, tensor2 = self.a_embeddings.chunk(2, dim=0)
+        return tensor1, tensor2
 
     def __repr__(self):
         return "PairedLayer4Extractor"

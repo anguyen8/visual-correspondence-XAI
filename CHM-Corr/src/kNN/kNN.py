@@ -96,7 +96,7 @@ def prepare_and_run(
 
     val_size = 256
     if transform == "multi":
-        val_size = 240
+        val_size = 224
 
     val_dataset_transform = transforms.Compose(
         [

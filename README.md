@@ -148,7 +148,7 @@ If you wanna try out the UI on your device or get more materials to replicate th
 
 We also share the [training screens](https://drive.google.com/drive/folders/1S0ipBx8H8JDM-tERImHVHFz-YDwE2gf6?usp=sharing) and [test trials](https://drive.google.com/drive/folders/1EWC3hgivx1SA0V2bL2toBnNZvtJWnoGu?usp=sharing) for both human studies on Google Drive.
 
-### 3.3. Experimental human study interface
+### 3.3. Human-study Huggingface demo for pilot studies
 
 We also made an experimental UI for internal testing, which can be accessed on the Huggingface spaces. 
 

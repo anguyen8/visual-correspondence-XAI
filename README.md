@@ -1,7 +1,9 @@
 <div align="center">    
  
 # Visual correspondence-based explanations improve AI robustness and human-AI team accuracy 
-by [Giang Nguyen*](https://giangnguyen2412.github.io/), [Mohammad R. Taesiri*](https://taesiri.com/) and [Anh Nguyen](https://anhnguyen.me/). * denotes equal contribution.
+by [Giang Nguyen *](https://giangnguyen2412.github.io/), [Mohammad R. Taesiri *](https://taesiri.com/), and [Anh Nguyen](https://anhnguyen.me/). 
+
+\* equal contribution.
 
 [![Paper](https://img.shields.io/badge/paper-arxiv.svg)](https://arxiv.org/abs/2208.00780)
 [![Conference](http://img.shields.io/badge/XAI4CV@CVPR-2022-4b44ce.svg)](https://xai4cv.github.io/workshop)

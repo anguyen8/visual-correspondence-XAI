@@ -160,7 +160,7 @@ We also made an experimental UI for internal testing, which can be accessed on t
 ## 4. Acknowledgment
 
 * The CHM-Corr classifier relies on [CHMNet](https://github.com/juhongm999/chm) to find correspondence points between two images.
-* The [code](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/ResNet-50/CUB-iNaturalist/FeatureExtractors.py) for feature extraction using iNaturalist pretraind ResNet-50 was kindly provided by [Jonathan Donnellya](mailto:jonathan.donnelly@maine.edu)
+* The [code](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/ResNet-50/CUB-iNaturalist/FeatureExtractors.py) for feature extraction using iNaturalist pretraind ResNet-50 was kindly provided by [Jon Donnelly](mailto:jonathan.donnelly@maine.edu)
 
 ## 5. License
 [MIT](LICENSE)

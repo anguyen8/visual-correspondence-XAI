@@ -18,10 +18,10 @@ We show that it is possible to achieve complementary human-AI team accuracy (i.e
 
 If you use this software, please consider citing:
 
-    @article{correspondence2022,
+    @article{nguyen2022visual,
       title={Visual correspondence-based explanations improve AI robustness and human-AI team accuracy},
-      author={Giang Nguyen, Mohammad Reza Taesiri, Anh Nguyen},
-      booktitle={XAI4CV workshop at CVPR},
+      author={Nguyen, Giang and Taesiri, Mohammad Reza and Nguyen, Anh},
+      journal={arXiv preprint arXiv:2208.00780},
       year={2022}
     }
 

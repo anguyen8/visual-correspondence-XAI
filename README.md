@@ -6,7 +6,8 @@ by [Giang Nguyen *](https://giangnguyen2412.github.io/), [Mohammad R. Taesiri *]
 \* equal contribution.
 
 [![Paper](https://img.shields.io/badge/paper-arxiv.svg)](https://arxiv.org/abs/2208.00780)
-[![Conference](http://img.shields.io/badge/XAI4CV@CVPR-2022-4b44ce.svg)](https://xai4cv.github.io/workshop)
+ [![Conference](http://img.shields.io/badge/NeurIPS2022-4b44ce.svg)](https://openreview.net/forum?id=UavQ9HYye6n)
+[![Conference](http://img.shields.io/badge/XAI4CV@CVPR2022-4b44ce.svg)](https://xai4cv.github.io/workshop)
 [![Conference](http://img.shields.io/badge/poster-4b44ce.svg)](https://www.dropbox.com/s/1neko0pjbexlsjf/p49.pdf?dl=0)
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-CHM_Corr-blue)](https://huggingface.co/spaces/XAI/CHM-Corr)
 </div> 
@@ -17,12 +18,10 @@ On a large-scale human study (∼60 users per method per dataset) on ImageNet an
 We show that it is possible to achieve complementary human-AI team accuracy (i.e., that is higher than either AI-alone or human-alone), on ImageNet and CUB._   
 
 If you use this software, please consider citing:
-
-    @article{nguyen2022visual,
+    @inproceedings{taesirivisual,
       title={Visual correspondence-based explanations improve AI robustness and human-AI team accuracy},
-      author={Nguyen, Giang and Taesiri, Mohammad Reza and Nguyen, Anh},
-      journal={arXiv preprint arXiv:2208.00780},
-      year={2022}
+      author={Taesiri, Mohammad Reza and Nguyen, Giang and Nguyen, Anh},
+      booktitle={Advances in Neural Information Processing Systems}
     }
 
 ## 1. Requirements

@@ -18,6 +18,7 @@ On a large-scale human study (∼60 users per method per dataset) on ImageNet an
 We show that it is possible to achieve complementary human-AI team accuracy (i.e., that is higher than either AI-alone or human-alone), on ImageNet and CUB._   
 
 If you use this software, please consider citing:
+
     @inproceedings{taesirivisual,
       title={Visual correspondence-based explanations improve AI robustness and human-AI team accuracy},
       author={Taesiri, Mohammad Reza and Nguyen, Giang and Nguyen, Anh},

@@ -17,6 +17,8 @@ Our models improve on several out-of-distribution (OOD) ImageNet datasets while 
 On a large-scale human study (∼60 users per method per dataset) on ImageNet and CUB, our correspondence-based explanations led to human-alone image classification accuracy and human-AI team accuracy that are consistently better than that of kNN. 
 We show that it is possible to achieve complementary human-AI team accuracy (i.e., that is higher than either AI-alone or human-alone), on ImageNet and CUB._   
 
+:star: Follow-up work: Interactive [demo](https://aub.ie/corr) of CHM-Corr++ (image classifiers that make predictions based on human-guided patch attention)
+
 If you use this software, please consider citing:
 
     @inproceedings{taesirivisual,
@@ -102,7 +104,7 @@ sh run.sh -d imagenet1k-val -v True -i False
 ![](figs/ILSVRC2012_val_00003158.jpeg)
 * EMD-Corr matches these ```panda``` pairs by looking at facial features. 
 
-#### 2.3.2. Visualize CHM-Corr explanations
+#### 2.3.2. Visualize CHM-Corr explanations (CHM-Corr [interactive demo](https://aub.ie/corr))
 
 We provide a notebook to generate a visualization of the CHM-Corr classifier's output. Please first run CHM-Corr using the guide provided in [`CHM-Corr/README.md`](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/README.md), then use [`CHM-Corr/src/visualization/visualization.ipynb`](https://github.com/anguyen8/visual-correspondence-XAI/blob/main/CHM-Corr/src/visualization/visualization.ipynb) to generate the visualizations.
 

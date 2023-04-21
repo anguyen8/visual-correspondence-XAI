@@ -10,6 +10,7 @@ by [Giang Nguyen *](https://giangnguyen2412.github.io/), [Mohammad R. Taesiri *]
 [![Conference](http://img.shields.io/badge/XAI4CV@CVPR2022-4b44ce.svg)](https://xai4cv.github.io/workshop)
 [![Conference](http://img.shields.io/badge/poster-4b44ce.svg)](https://www.dropbox.com/s/1neko0pjbexlsjf/p49.pdf?dl=0)
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-CHM_Corr-blue)](https://huggingface.co/spaces/XAI/CHM-Corr)
+[![Demo](https://img.shields.io/badge/CHM_Corr++-demo-orange)](https://aub.ie/corr)
 </div> 
 
 _**tldr:** We propose two architectures of interpretable image classifiers that first explain, and then predict by harnessing the visual correspondences between a query image and exemplars.

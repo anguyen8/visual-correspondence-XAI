@@ -63,7 +63,7 @@ sh run -d [DATASET] -v False -i [True/False]
 
 To see available options, run:
 ```bash
-sh run ?  # 
+sh run.sh ?  # 
 ```
 
 For example, running ```EMD-Corr``` for **CUB-200** using iNaturalist-pretrained ResNet-50 feature.

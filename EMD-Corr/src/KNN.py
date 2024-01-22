@@ -20,13 +20,7 @@ from tqdm import tqdm
 class GPUParams(object):
     def __init__(self):
         os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-        os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3,4,5,6,7"
-
-        print(torch.cuda.device_count())
-        print(torch.cuda.get_device_name(device=0))
-
-        self.device = torch.device("cuda:0")
-
+        os.environ["CUDA_VISIBLE_DEVICES"] = "4,5,6,7"
 
 RunningParams = RunningParams()
 Dataset = Dataset()
@@ -382,11 +376,13 @@ for val_dataset in [val_datasets]:
 
             gt_id = val_labels_np[i]
 
-            prediction = torch.argmax(torch.bincount(labels_np[scores[i]]))
+            final_labels_np = labels_np.cpu()
+            final_scores = scores[i].cpu()
+            prediction = torch.argmax(torch.bincount(final_labels_np[final_scores]))
 
             KNN_dict[i]["1000_NNs"] = sorted_1k.to("cpu")
             KNN_dict[i]["NNs_id_count_dict"] = collections.Counter(
-                labels_np[scores[i]].numpy()
+                final_labels_np[final_scores].numpy()
             )
 
             KNN_dict[i]["Predicted_id"] = prediction.to("cpu").numpy()
@@ -427,9 +423,7 @@ for val_dataset in [val_datasets]:
                 NNs = [
                     [
                         imagenet_train_data.samples[nn_idx][0],
-                        HelperFunctions.train_extract_wnid(
-                            imagenet_train_data.samples[nn_idx][0]
-                        ),
+                        os.path.basename(os.path.dirname(imagenet_train_data.samples[nn_idx][0]))
                     ]
                     for nn_idx in sorted_1k
                 ]

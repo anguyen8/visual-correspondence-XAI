@@ -168,31 +168,9 @@ with torch.no_grad():
         train_id_to_wnid = dict(
             (v, k) for k, v in imagenet_train_data.class_to_idx.items()
         )
-        ############################
-        # This block load the input images for human study plot visualization
-        Task1_images_dict = np.load(
-            "/home/giang/Downloads/KNN-ImageNet/HS_datasets/Task1_Images.npy",
-            allow_pickle="False",
-        ).item()
-        Task1_images = Task1_images_dict["Correct"] + Task1_images_dict["Wrong"]
-
+        
         N_test = len(KNN_dict) - 2
-        # N_test = 4 # Just for test, remove to get the paper numbers
-        Task1_images_dict = np.load(
-            "/home/giang/Downloads/Gorilla/Task1/Task1_metadata.npy",
-            allow_pickle="False",
-        ).item()
-        img_ids = []
-        # [ResNet-50, KNN, EMD-Corr, CHM-Corr]
-        for method in [1, 2, 3, 4]:
-            for correctness in ["Correct", "Wrong"]:
-                img_ids += Task1_images_dict["Method{}".format(method)][correctness]
-
-        img_ids = [] # e.g. ILSVRC2012_val_00000075.JPEG if you want to visualize this image only
-        Task1 = True
-        Task2 = False
-        ############################
-
+        
         for num_patch in num_patches:
             print("K is {}| Num patch is {}".format(K_value, num_patch))
             correct_count = 0
@@ -222,14 +200,6 @@ with torch.no_grad():
                 scores[i] = KNN_dict[i]["1000_NNs"][-K_value:].to("cpu")
                 Query = KNN_dict[i]["Query"]
                 base_path_name = os.path.basename(Query[0])
-
-
-                if (
-                    base_path_name not in img_ids
-                    and val_dataset == Dataset.IMAGENET_1K_50K_CLEAN
-                    and RunningParams.VISUALIZATION is True
-                ):
-                    continue
 
                 NNs = KNN_dict[i]['NNs'][-K_value:]
 
